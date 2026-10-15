@@ -1,4 +1,6 @@
 
 {
-  "framework": "sveltekit"
+  "framework": "sveltekit",
+  "outputDirectory": ".svelte-kit"
 }
+
