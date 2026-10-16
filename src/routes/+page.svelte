@@ -1,10 +1,10 @@
 
 <script>
-  let busqueda = '';
-  let categoria = 'Todas';
-  let carrito = [];
-  let mensaje = '';
-  let enviando = false;
+let busqueda = $state('');
+let categoria = $state('Todas');
+let carrito = $state([]);
+let mensaje = $state('');
+let enviando = $state(false);
 
   const SUPABASE_URL = 'https://xlxodjaggdwyswrloium.supabase.co';
   const SUPABASE_KEY = 'sb_publishable__PYnr5wMirAgLAx8MnvphA_7cgtqdv6';
@@ -177,7 +177,10 @@ let ofertas = $derived(
         <h1>Tu compra diaria,<br /><span>más fácil y cerca de ti.</span></h1>
         <p>Encuentra tus productos favoritos, descubre ofertas y organiza tu próxima compra con Supermercado Olé.</p>
 
-        <form class="busqueda-hero" on:submit|preventDefault={() => document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' })}>
+      <form class="busqueda-hero" onsubmit={(event) => {
+  event.preventDefault();
+  document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' });
+}}>
           <span>⌕</span>
           <input
             bind:value={busqueda}
@@ -220,7 +223,7 @@ let ofertas = $derived(
           <button
             class:categoria-activa={categoria === item}
             class="categoria-card"
-            on:click={() => { categoria = item; document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' }); }}
+           onclick={() => { categoria = item; document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' }); }}
           >
             <span class="categoria-icono">
               {item === 'Frutas y verduras' ? '🥑' : item === 'Carnes y pescados' ? '🍗' : item === 'Lácteos' ? '🥛' : item === 'Bebidas' ? '🧃' : item === 'Limpieza' ? '🧼' : '🛒'}
@@ -388,7 +391,7 @@ let ofertas = $derived(
           <div class="contacto-dato"><span>💬</span><div><strong>Atención a nuestros clientes</strong><p>Escríbenos mediante este formulario.</p></div></div>
         </div>
 
-        <form class="formulario" on:submit={enviar}>
+        <form class="formulario" onsubmit={enviar}>
           <h3>Contáctanos</h3>
           <p class="formulario-descripcion">Completa los campos y envíanos tu mensaje.</p>
 
