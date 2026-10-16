@@ -256,7 +256,7 @@ let ofertas = $derived(
         <span>⌕</span>
         <input bind:value={busqueda} type="search" placeholder="Buscar por nombre del producto..." aria-label="Buscar en el catálogo" />
         {#if busqueda}
-          <button class="limpiar" on:click={() => busqueda = ''}>Limpiar</button>
+          <button class="limpiar" onclick={() => busqueda = ''}>Limpiar</button>
         {/if}
       </div>
 
@@ -276,7 +276,7 @@ let ofertas = $derived(
                 <p class="unidad">Precio por {producto.unidad}</p>
                 <div class="producto-pie">
                   <strong>{dinero(producto.precio)}</strong>
-                  <button class="agregar" on:click={() => agregarAlCarrito(producto)} aria-label={`Agregar ${producto.nombre} al carrito`}>+</button>
+                  <button class="agregar" onclick={() => agregarAlCarrito(producto)} aria-label={`Agregar ${producto.nombre} al carrito`}>+</button>
                 </div>
               </div>
             </article>
@@ -287,7 +287,7 @@ let ofertas = $derived(
           <span>🔎</span>
           <h3>No encontramos productos</h3>
           <p>Prueba con otro nombre o selecciona otra categoría.</p>
-          <button class="boton-secundario" on:click={() => { busqueda = ''; categoria = 'Todas'; }}>Mostrar todos</button>
+          <button class="boton-secundario" onclick={() => { busqueda = ''; categoria = 'Todas'; }}>Mostrar todos</button>
         </div>
       {/if}
     </section>
@@ -310,7 +310,7 @@ let ofertas = $derived(
               <span>OFERTA DESTACADA</span>
               <h3>{producto.nombre}</h3>
               <strong>{dinero(producto.precio)}</strong>
-              <button on:click={() => agregarAlCarrito(producto)}>Agregar al carrito +</button>
+              <button onclick={() => agregarAlCarrito(producto)}>Agregar al carrito +</button>
             </div>
           </article>
         {/each}
@@ -342,12 +342,12 @@ let ofertas = $derived(
                 <div class="item-detalle">
                   <strong>{producto.nombre}</strong>
                   <span>{dinero(producto.precio)} por {producto.unidad}</span>
-                  <button class="quitar" on:click={() => quitarDelCarrito(producto.id)}>Eliminar</button>
+                  <button class="quitar" onclick={() => quitarDelCarrito(producto.id)}>Eliminar</button>
                 </div>
                 <div class="cantidad-control">
-                  <button on:click={() => cambiarCantidad(producto.id, -1)} aria-label="Reducir cantidad">−</button>
+                  <button onclick={() => cambiarCantidad(producto.id, -1)} aria-label="Reducir cantidad">−</button>
                   <span>{producto.cantidad}</span>
-                  <button on:click={() => cambiarCantidad(producto.id, 1)} aria-label="Aumentar cantidad">+</button>
+                  <button onclick={() => cambiarCantidad(producto.id, 1)} aria-label="Aumentar cantidad">+</button>
                 </div>
                 <strong class="subtotal">{dinero(producto.precio * producto.cantidad)}</strong>
               </div>
