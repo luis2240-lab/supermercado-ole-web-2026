@@ -504,8 +504,8 @@ let ofertas = $derived(
         mensaje = '';
       }}>Volver a contacto</a>
     </p>
-  </form>
-{:else}
+   </form>
+{/if}
 
       </div>
     </section>
