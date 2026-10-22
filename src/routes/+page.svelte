@@ -5,6 +5,7 @@ let categoria = $state('Todas');
 let carrito = $state([]);
 let mensaje = $state('');
 let enviando = $state(false);
+let tipoFormulario = $state('contacto');
 
   const SUPABASE_URL = 'https://xlxodjaggdwyswrloium.supabase.co';
   const SUPABASE_KEY = 'sb_publishable__PYnr5wMirAgLAx8MnvphA_7cgtqdv6';
@@ -162,7 +163,7 @@ let ofertas = $derived(
     </nav>
 
     <div class="acciones-header">
-      <a class="login" href="#contacto">Iniciar sesión</a>
+      <a class="login" href="#contacto" onclick={() => tipoFormulario = 'login'}>Iniciar sesión</a>
       <a class="carrito-header" href="#carrito">
         🛒 <span>Mi carrito</span>
         <b>{cantidadCarrito}</b>
@@ -376,7 +377,7 @@ let ofertas = $derived(
         <p>Visita nuestras sucursales en República Dominicana y encuentra los productos que necesitas para tu hogar.</p>
         <div class="sucursal-dato"><span>📍</span><div><strong>Varias ubicaciones</strong><p>Consulta la dirección de tu sucursal preferida.</p></div></div>
         <div class="sucursal-dato"><span>🕒</span><div><strong>Horario general</strong><p>Todos los días, de 7:00 a. m. a 10:00 p. m. Puede variar por sucursal.</p></div></div>
-        <a href="#contacto" class="boton-rojo">Solicitar información</a>
+        <a href="#contacto" class="boton-rojo" onclick={() => tipoFormulario = 'contacto'}>Solicitar información</a>
       </div>
     </section>
 
@@ -1363,334 +1364,327 @@ let ofertas = $derived(
     font-size: 12px;
   }
 
-  .formulario {
-    min-width: 0;
-    padding: 28px;
-    display: grid;
-    gap: 16px;
-    border-radius: 13px;
-    background: #ffffff;
-    color: #222222;
-    box-shadow: 0 15px 45px #00000020;
+ 
+.formulario {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 32px;
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  border: 1px solid #eeeeee;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #222222;
+  box-shadow: 0 18px 50px #00000018;
+}
+
+.formulario-encabezado {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.formulario-etiqueta {
+  color: #d7192d;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+}
+
+.formulario h3 {
+  margin: 0;
+  color: #222222;
+  font-size: 29px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.formulario-descripcion {
+  margin: 0;
+  color: #666666;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.formulario label {
+  display: grid;
+  gap: 9px;
+  color: #292929;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 14px 15px;
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  outline: none;
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  -webkit-text-fill-color: #222222;
+  caret-color: #d7192d;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  opacity: 1;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formulario input::placeholder,
+.formulario textarea::placeholder {
+  color: #888888 !important;
+  -webkit-text-fill-color: #888888;
+  opacity: 1;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+  border-color: #d7192d;
+  outline: none;
+  box-shadow: 0 0 0 3px #d7192d20;
+}
+
+.formulario input::selection,
+.formulario textarea::selection {
+  color: #ffffff;
+  background-color: #d7192d;
+  -webkit-text-fill-color: #ffffff;
+}
+
+.formulario textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.formulario button {
+  min-height: 50px;
+  margin-top: 2px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.formulario button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.estado {
+  min-height: 18px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.estado.exito {
+  color: #147a3c;
+}
+
+.estado.error {
+  color: #b00020;
+}
+
+@media (max-width: 1000px) {
+  .encabezado {
+    flex-wrap: wrap;
   }
 
-  .formulario h3 {
-    margin: 0;
-    color: #222222;
-    font-size: 23px;
-  }
-
-  .formulario-descripcion {
-    margin: -8px 0 0;
-    color: #555555;
-    font-size: 12px;
-    line-height: 1.6;
-  }
-
-  .formulario label {
-    display: grid;
-    gap: 8px;
-    color: #222222;
-    font-size: 12px;
-    font-weight: 700;
-  }
-
-  .formulario input,
-  .formulario select,
-  .formulario textarea {
+  .navegacion {
+    order: 3;
     width: 100%;
-    min-width: 0;
-    padding: 13px;
-    border: 1px solid #bdbdbd;
-    border-radius: 8px;
-    outline: none;
-    background-color: #ffffff !important;
-    color: #222222 !important;
-    -webkit-text-fill-color: #222222;
-    caret-color: #d7192d;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-    opacity: 1;
+    justify-content: flex-start;
   }
 
-  .formulario input::placeholder,
-  .formulario textarea::placeholder {
-    color: #777777 !important;
-    -webkit-text-fill-color: #777777;
-    opacity: 1;
+  .categorias-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .formulario input:focus,
-  .formulario select:focus,
-  .formulario textarea:focus {
-    border-color: #d7192d;
-    outline: 2px solid #d7192d;
-    outline-offset: 1px;
+  .productos-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .formulario input::selection,
-  .formulario textarea::selection {
-    color: #ffffff;
-    background-color: #d7192d;
-    -webkit-text-fill-color: #ffffff;
+  .ofertas-grid {
+    grid-template-columns: 1fr;
   }
 
-  .formulario textarea {
-    min-height: 115px;
-    resize: vertical;
+  .oferta-card {
+    grid-template-columns: 130px 1fr;
   }
+}
 
-  .formulario button:disabled {
-    cursor: wait;
-    opacity: 0.65;
-  }
-
-  .estado {
-    min-height: 18px;
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-  }
-
-  .estado.exito {
-    color: #147a3c;
-  }
-
-  .estado.error {
-    color: #b00020;
-  }
-
-  .pie-pagina {
-    padding: 35px 7% 0;
-    background: #171717;
-    color: #ffffff;
-  }
-
-  .pie-principal {
-    padding-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .logo-pie .logo-texto {
-    color: #ffffff;
-  }
-
-  .pie-principal > p {
-    color: #cccccc;
-    font-size: 11px;
-  }
-
-  .pie-enlaces {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 17px;
-    font-size: 11px;
-  }
-
-  .pie-final {
-    padding: 18px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    border-top: 1px solid #ffffff20;
-    color: #cccccc;
+@media (max-width: 700px) {
+  .barra-superior {
+    flex-direction: column;
+    gap: 5px;
     font-size: 10px;
   }
 
-  .pie-final a {
-    color: #ffffff;
+  .encabezado {
+    padding: 15px 5%;
+    gap: 15px;
   }
 
-  @media (max-width: 1000px) {
-    .encabezado {
-      flex-wrap: wrap;
-    }
-
-    .navegacion {
-      order: 3;
-      width: 100%;
-      justify-content: flex-start;
-    }
-
-    .categorias-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .productos-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .ofertas-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .oferta-card {
-      grid-template-columns: 130px 1fr;
-    }
+  .logo-icono {
+    font-size: 31px;
   }
 
-  @media (max-width: 700px) {
-    .barra-superior {
-      flex-direction: column;
-      gap: 5px;
-      font-size: 10px;
-    }
+  .acciones-header {
+    gap: 8px;
+  }
 
-    .encabezado {
-      padding: 15px 5%;
-      gap: 15px;
-    }
+  .login {
+    padding: 9px;
+    font-size: 10px;
+  }
 
-    .logo-icono {
-      font-size: 31px;
-    }
+  .carrito-header span {
+    display: none;
+  }
 
-    .acciones-header {
-      gap: 8px;
-    }
+  .navegacion {
+    gap: 15px;
+    font-size: 11px;
+  }
 
-    .login {
-      padding: 9px;
-      font-size: 10px;
-    }
+  .hero {
+    padding: 40px 6%;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
 
-    .carrito-header span {
-      display: none;
-    }
+  .hero h1 {
+    font-size: 38px;
+  }
 
-    .navegacion {
-      gap: 15px;
-      font-size: 11px;
-    }
+  .hero-imagen {
+    min-height: 250px;
+  }
 
-    .hero {
-      padding: 40px 6%;
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
+  .hero-imagen > img {
+    height: 280px;
+  }
 
-    .hero h1 {
-      font-size: 38px;
-    }
+  .tarjeta-flotante {
+    right: 8px;
+    bottom: 12px;
+  }
 
-    .hero-imagen {
-      min-height: 250px;
-    }
+  .categorias-seccion,
+  .productos-seccion,
+  .carrito-seccion,
+  .ofertas-seccion,
+  .sucursales-seccion,
+  .contacto {
+    padding: 45px 6%;
+  }
 
-    .hero-imagen > img {
-      height: 280px;
-    }
+  .titulo-seccion {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+  }
 
-    .tarjeta-flotante {
-      right: 8px;
-      bottom: 12px;
-    }
+  .categorias-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
 
-    .categorias-seccion,
-    .productos-seccion,
-    .carrito-seccion,
-    .ofertas-seccion,
-    .sucursales-seccion,
-    .contacto {
-      padding: 45px 6%;
-    }
+  .categoria-card {
+    min-height: 120px;
+  }
 
-    .titulo-seccion {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 13px;
-    }
+  .productos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
 
-    .categorias-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
+  .producto-imagen {
+    height: 145px;
+  }
 
-    .categoria-card {
-      min-height: 120px;
-    }
+  .producto-info {
+    padding: 12px;
+  }
 
-    .productos-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
+  .producto-info h3 {
+    font-size: 13px;
+  }
 
-    .producto-imagen {
-      height: 145px;
-    }
+  .producto-pie strong {
+    font-size: 14px;
+  }
 
-    .producto-info {
-      padding: 12px;
-    }
+  .filtro-categoria {
+    width: 100%;
+    justify-content: space-between;
+  }
 
-    .producto-info h3 {
-      font-size: 13px;
-    }
+  .filtro-categoria select {
+    max-width: 65%;
+  }
 
-    .producto-pie strong {
-      font-size: 14px;
-    }
+  .oferta-grafica {
+    font-size: 55px;
+  }
 
-    .filtro-categoria {
-      width: 100%;
-      justify-content: space-between;
-    }
+  .carrito-contenido,
+  .sucursales-seccion,
+  .contacto-interior {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
 
-    .filtro-categoria select {
-      max-width: 65%;
-    }
+  .item-carrito {
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    gap: 10px;
+  }
 
-    .oferta-grafica {
-      font-size: 55px;
-    }
+  .item-carrito > img {
+    width: 52px;
+    height: 52px;
+  }
 
-    .carrito-contenido,
-    .sucursales-seccion,
-    .contacto-interior {
-      grid-template-columns: 1fr;
-      gap: 25px;
-    }
+  .cantidad-control {
+    grid-column: 2;
+    grid-row: 2;
+  }
 
-    .item-carrito {
-      grid-template-columns: 52px minmax(0, 1fr) auto;
-      gap: 10px;
-    }
+  .subtotal {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
 
-    .item-carrito > img {
-      width: 52px;
-      height: 52px;
-    }
+  .sucursal-imagen img {
+    height: 260px;
+  }
 
-    .cantidad-control {
-      grid-column: 2;
-      grid-row: 2;
-    }
+  .contacto-texto {
+    padding-top: 0;
+  }
 
-    .subtotal {
-      grid-column: 3;
-      grid-row: 1 / span 2;
-      align-self: center;
-    }
+  .formulario {
+    padding: 23px 19px;
+    gap: 17px;
+    border-radius: 14px;
+  }
 
-    .sucursal-imagen img {
-      height: 260px;
-    }
-
-    .contacto-texto {
-      padding-top: 0;
-    }
-
-    .formulario {
-      padding: 21px;
-    }
+  .formulario h3 {
+    font-size: 26px;
+  }
+}
 
     .pie-principal {
       align-items: flex-start;
