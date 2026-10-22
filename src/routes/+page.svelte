@@ -470,6 +470,42 @@ let ofertas = $derived(
     role="status"
   >{mensaje}</p>
 </form>
+{#if tipoFormulario === 'login'}
+  <form class="formulario" onsubmit={(event) => {
+    event.preventDefault();
+    mensaje = 'El inicio de sesión todavía no está configurado.';
+  }}>
+    <div class="formulario-encabezado">
+      <span class="formulario-etiqueta">BIENVENIDO A OLÉ</span>
+      <h3>Iniciar sesión</h3>
+      <p class="formulario-descripcion">Accede a tu cuenta para continuar.</p>
+    </div>
+
+    <label for="login-email">
+      Correo electrónico
+      <input id="login-email" name="email" type="email" required placeholder="Tu correo electrónico" autocomplete="email" />
+    </label>
+
+    <label for="login-password">
+      Contraseña
+      <input id="login-password" name="password" type="password" required placeholder="Tu contraseña" autocomplete="current-password" />
+    </label>
+
+    <button class="boton-rojo boton-ancho" type="submit">
+      Iniciar sesión →
+    </button>
+
+    <p class="estado" role="status">{mensaje}</p>
+
+    <p class="formulario-descripcion">
+      ¿Quieres consultar algo?
+      <a href="#contacto" onclick={() => {
+        tipoFormulario = 'contacto';
+        mensaje = '';
+      }}>Volver a contacto</a>
+    </p>
+  </form>
+{:else}
 
       </div>
     </section>
