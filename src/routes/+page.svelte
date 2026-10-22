@@ -391,39 +391,85 @@ let ofertas = $derived(
           <div class="contacto-dato"><span>💬</span><div><strong>Atención a nuestros clientes</strong><p>Escríbenos mediante este formulario.</p></div></div>
         </div>
 
-        <form class="formulario" onsubmit={enviar}>
-          <h3>Contáctanos</h3>
-          <p class="formulario-descripcion">Completa los campos y envíanos tu mensaje.</p>
+       
+<form class="formulario" onsubmit={enviar}>
+  <div class="formulario-encabezado">
+    <span class="formulario-etiqueta">ESTAMOS PARA AYUDARTE</span>
+    <h3>Contáctanos</h3>
+    <p class="formulario-descripcion">
+      ¿Tienes alguna pregunta o sugerencia? Escríbenos y te atenderemos.
+    </p>
+  </div>
 
-          <label for="nombre">Nombre completo
-            <input id="nombre" name="nombre" type="text" required minlength="2" maxlength="100" placeholder="Escribe tu nombre" autocomplete="name" />
-          </label>
+  <label for="nombre">
+    Nombre completo
+    <input
+      id="nombre"
+      name="nombre"
+      type="text"
+      required
+      minlength="2"
+      maxlength="100"
+      placeholder="Ej. Juan Pérez"
+      autocomplete="name"
+    />
+  </label>
 
-          <label for="email">Correo electrónico
-            <input id="email" name="email" type="email" required maxlength="254" placeholder="nombre@correo.com" autocomplete="email" />
-          </label>
+  <label for="email">
+    Correo electrónico
+    <input
+      id="email"
+      name="email"
+      type="email"
+      required
+      maxlength="254"
+      placeholder="Ej. juan@correo.com"
+      autocomplete="email"
+    />
+  </label>
 
-          <label for="motivo">Motivo
-            <select id="motivo" name="motivo" required>
-              <option value="">Selecciona un motivo</option>
-              <option value="Productos">Productos</option>
-              <option value="Ofertas y promociones">Ofertas y promociones</option>
-              <option value="Sucursales y horarios">Sucursales y horarios</option>
-              <option value="Pedidos">Pedidos</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </label>
+  <label for="motivo">
+    ¿En qué podemos ayudarte?
+    <select id="motivo" name="motivo" required>
+      <option value="">Selecciona una opción</option>
+      <option value="Productos">Consulta sobre productos</option>
+      <option value="Ofertas y promociones">Ofertas y promociones</option>
+      <option value="Sucursales y horarios">Sucursales y horarios</option>
+      <option value="Pedidos">Pedidos</option>
+      <option value="Sugerencias">Sugerencias</option>
+      <option value="Otro">Otro</option>
+    </select>
+  </label>
 
-          <label for="mensaje">Mensaje
-            <textarea id="mensaje" name="mensaje" required minlength="10" maxlength="3000" rows="4" placeholder="¿Cómo podemos ayudarte?"></textarea>
-          </label>
+  <label for="mensaje">
+    Tu mensaje
+    <textarea
+      id="mensaje"
+      name="mensaje"
+      required
+      minlength="10"
+      maxlength="3000"
+      rows="5"
+      placeholder="Cuéntanos cómo podemos ayudarte..."
+    ></textarea>
+  </label>
 
-          <button class="boton-rojo boton-ancho" type="submit" disabled={enviando}>
-            {enviando ? 'Enviando...' : 'Enviar mensaje →'}
-          </button>
+  <button
+    class="boton-rojo boton-ancho"
+    type="submit"
+    disabled={enviando}
+  >
+    {enviando ? 'Enviando...' : 'Enviar mensaje →'}
+  </button>
 
-          <p class="estado" class:exito={mensaje.startsWith('¡')} class:error={mensaje !== '' && !mensaje.startsWith('¡')} role="status">{mensaje}</p>
-        </form>
+  <p
+    class="estado"
+    class:exito={mensaje.startsWith('¡')}
+    class:error={mensaje !== '' && !mensaje.startsWith('¡')}
+    role="status"
+  >{mensaje}</p>
+</form>
+
       </div>
     </section>
   </main>
