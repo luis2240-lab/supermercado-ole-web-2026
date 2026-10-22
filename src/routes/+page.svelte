@@ -158,6 +158,46 @@ async function registrarUsuario(event) {
   }
 }
 
+async function enviar(event) {
+  event.preventDefault();
+
+  const formulario = event.currentTarget;
+  const datos = Object.fromEntries(new FormData(formulario));
+
+  mensaje = '';
+  enviando = true;
+
+  try {
+    const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/contactos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: SUPABASE_KEY,
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({
+        nombre: String(datos.nombre).trim(),
+        email: String(datos.email).trim(),
+        motivo: String(datos.motivo),
+        mensaje: String(datos.mensaje).trim()
+      })
+    });
+
+    if (!respuesta.ok) {
+      throw new Error('No se pudo enviar el mensaje. Inténtalo de nuevo.');
+    }
+
+    mensaje = '¡Mensaje enviado correctamente!';
+    formulario.reset();
+  } catch (error) {
+    mensaje = error.message || 'Ocurrió un error al enviar el mensaje.';
+  } finally {
+    enviando = false;
+  }
+}
+
+
+
 </script>
 
 <svelte:head>
