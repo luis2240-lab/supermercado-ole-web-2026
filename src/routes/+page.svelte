@@ -1,5 +1,6 @@
 
 <script>
+import { createClient } from '@supabase/supabase-js';
 let busqueda = $state('');
 let categoria = $state('Todas');
 let carrito = $state([]);
@@ -9,6 +10,7 @@ let tipoFormulario = $state('contacto');
 
   const SUPABASE_URL = 'https://xlxodjaggdwyswrloium.supabase.co';
   const SUPABASE_KEY = 'sb_publishable__PYnr5wMirAgLAx8MnvphA_7cgtqdv6';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const categorias = [
     'Todas',
@@ -95,45 +97,67 @@ let ofertas = $derived(
     }).format(valor);
   }
 
-  async function enviar(event) {
-    event.preventDefault();
+  
+async function iniciarSesion(event) {
+  event.preventDefault();
 
-    const formulario = event.currentTarget;
-    const datos = Object.fromEntries(new FormData(formulario));
+  const formulario = event.currentTarget;
+  const datos = Object.fromEntries(new FormData(formulario));
 
-    mensaje = '';
-    enviando = true;
+  mensaje = '';
+  enviando = true;
 
-    try {
-      const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/contactos`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({
-          nombre: String(datos.nombre).trim(),
-          email: String(datos.email).trim(),
-          motivo: String(datos.motivo).trim(),
-          mensaje: String(datos.mensaje).trim()
-        })
-      });
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: String(datos.email).trim(),
+      password: String(datos.password)
+    });
 
-      if (!respuesta.ok) {
-        const error = await respuesta.json().catch(() => ({}));
-        console.error('Error de Supabase:', error);
-        throw new Error(error.message || 'No se pudo enviar el mensaje. Revisa la configuración de Supabase.');
-      }
+    if (error) throw error;
 
-      mensaje = '¡Mensaje enviado correctamente!';
-      formulario.reset();
-    } catch (error) {
-      mensaje = error.message || 'Ocurrió un error al enviar el mensaje.';
-    } finally {
-      enviando = false;
-    }
+    mensaje = '¡Sesión iniciada correctamente!';
+    formulario.reset();
+  } catch (error) {
+    mensaje = error.message || 'No se pudo iniciar sesión.';
+  } finally {
+    enviando = false;
   }
+}
+
+async function registrarUsuario(event) {
+  event.preventDefault();
+
+  const formulario = event.currentTarget;
+  const datos = Object.fromEntries(new FormData(formulario));
+
+  mensaje = '';
+  enviando = true;
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: String(datos.email).trim(),
+      password: String(datos.password),
+      options: {
+        data: {
+          nombre: String(datos.nombre).trim()
+        }
+      }
+    });
+
+    if (error) throw error;
+
+    mensaje = data.session
+      ? '¡Cuenta creada correctamente! Ya puedes iniciar sesión.'
+      : '¡Registro enviado! Revisa tu correo para confirmar la cuenta.';
+
+    formulario.reset();
+  } catch (error) {
+    mensaje = error.message || 'No se pudo crear la cuenta.';
+  } finally {
+    enviando = false;
+  }
+}
+
 </script>
 
 <svelte:head>
@@ -394,11 +418,43 @@ let ofertas = $derived(
 
        
 
-{#if tipoFormulario === 'login'}
-  <form class="formulario" onsubmit={(event) => {
-    event.preventDefault();
-    mensaje = 'El inicio de sesión todavía no está configurado.';
-  }}>
+
+{#if tipoFormulario === 'registro'}
+  <form class="formulario" onsubmit={registrarUsuario}>
+    <div class="formulario-encabezado">
+      <span class="formulario-etiqueta">ÚNETE A OLÉ</span>
+      <h3>Crear cuenta</h3>
+      <p class="formulario-descripcion">Regístrate para acceder a tu cuenta.</p>
+    </div>
+
+    <label for="registro-nombre">
+      Nombre completo
+      <input id="registro-nombre" name="nombre" type="text" required minlength="2" maxlength="100" autocomplete="name" placeholder="Tu nombre completo" />
+    </label>
+
+    <label for="registro-email">
+      Correo electrónico
+      <input id="registro-email" name="email" type="email" required autocomplete="email" placeholder="Tu correo electrónico" />
+    </label>
+
+    <label for="registro-password">
+      Contraseña
+      <input id="registro-password" name="password" type="password" required minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres" />
+    </label>
+
+    <button class="boton-rojo boton-ancho" type="submit" disabled={enviando}>
+      {enviando ? 'Creando cuenta...' : 'Crear cuenta →'}
+    </button>
+
+    <p class="estado" role="status">{mensaje}</p>
+
+    <p class="formulario-descripcion">
+      ¿Ya tienes cuenta?
+      <a href="#contacto" onclick={() => { tipoFormulario = 'login'; mensaje = ''; }}>Iniciar sesión</a>
+    </p>
+  </form>
+{:else if tipoFormulario === 'login'}
+  <form class="formulario" onsubmit={iniciarSesion}>
     <div class="formulario-encabezado">
       <span class="formulario-etiqueta">BIENVENIDO A OLÉ</span>
       <h3>Iniciar sesión</h3>
@@ -415,29 +471,20 @@ let ofertas = $derived(
       <input id="login-password" name="password" type="password" required placeholder="Tu contraseña" autocomplete="current-password" />
     </label>
 
-    <button class="boton-rojo boton-ancho" type="submit">
-      Iniciar sesión →
+    <button class="boton-rojo boton-ancho" type="submit" disabled={enviando}>
+      {enviando ? 'Iniciando sesión...' : 'Iniciar sesión →'}
     </button>
 
     <p class="estado" role="status">{mensaje}</p>
 
     <p class="formulario-descripcion">
-      ¿Quieres consultar algo?
-      <a href="#contacto" onclick={() => {
-        tipoFormulario = 'contacto';
-        mensaje = '';
-      }}>Volver a contacto</a>
+      ¿No tienes cuenta?
+      <a href="#contacto" onclick={() => { tipoFormulario = 'registro'; mensaje = ''; }}>Crear una cuenta</a>
     </p>
-     </form>
+  </form>
 {:else}
   <form class="formulario" onsubmit={enviar}>
-    <div class="formulario-encabezado">
-      <span class="formulario-etiqueta">ESTAMOS PARA AYUDARTE</span>
-      <h3>Contáctanos</h3>
-      <p class="formulario-descripcion">
-        ¿Tienes alguna pregunta o sugerencia? Escríbenos y te atenderemos.
-      </p>
-    </div>
+
 
     <label for="nombre">
       Nombre completo
