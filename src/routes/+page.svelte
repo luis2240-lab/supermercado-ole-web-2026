@@ -1686,11 +1686,6 @@ let ofertas = $derived(
   }
 }
 
-    .pie-principal {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-  }
 
   @media (max-width: 380px) {
     .productos-grid {
